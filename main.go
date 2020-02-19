@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
@@ -21,9 +22,13 @@ type Author struct {
 	Lastname  string `json:"lastname"`
 }
 
+// init books var as a slice Book struct
+var books []Book
+
 // Get all books
 func getBooks(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(books)
 }
 
 // Get a single book
@@ -49,6 +54,11 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// Init router
 	router := mux.NewRouter()
+
+	// Mock Data
+	// TODO impliment DB
+	books = append(books, Book{ID: "1", Isbn: "34687", Title: "First Book", Author: &Author{Firstname: "John", Lastname: "Doe"}})
+	books = append(books, Book{ID: "2", Isbn: "67334", Title: "Second Book", Author: &Author{Firstname: "Sam", Lastname: "Smith"}})
 
 	// Route handlers / Endpoint
 	router.HandleFunc("/api/books", getBooks).Methods("GET")
