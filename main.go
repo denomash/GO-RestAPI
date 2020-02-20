@@ -74,10 +74,11 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 			book.ID = params["id"] // Mock id - not safe in prod
 			books = append(books, book)
 			json.NewEncoder(w).Encode(book)
+			return
 		}
 	}
 
-	json.NewEncoder(w).Encode(books)
+	// json.NewEncoder(w).Encode(books)
 }
 
 // Delete a book
